@@ -1,5 +1,5 @@
 import express from "express";
-import {  Authentication, SignIn, SignUp, updateName, updatePassword } from "../controller/User.contoller.js";
+import {  Authentication, SignIn, SignUp, updateName, updatePassword } from "../controller/User.controller.js";
 import { authMiddleware } from "../middleware/authMiddleware.js";
 const userRouter = express.Router();
 userRouter.post('/signin', SignIn )

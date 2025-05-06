@@ -28,8 +28,6 @@ app.use(helmet());
 app.use(cookieParser()); 
 // app.use(rateLimit({ windowMs: 15 * 60 * 1000, max: 100 }));
 
-
-
 app.use('/api/auth/', userRouter);
 app.use('/api/loans', loanRouter)
 app.use('/api/withdrawal', withdrawalRouter)
