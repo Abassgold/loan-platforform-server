@@ -63,11 +63,11 @@ export const SignIn = async (req, res) => {
             msg: 'Login successful',
             user: {
                 id: user._id,
-                updatedAt: user._updatedAt,
+                updatedAt: user.updatedAt,
                 name: user.name,
                 email: user.email,
                 role: user.role,
-                createdAt: user._createdAt
+                createdAt: user.createdAt
             }
         });
     } catch (error) {
