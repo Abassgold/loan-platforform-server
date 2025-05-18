@@ -19,6 +19,7 @@ const MONGO_URI = process.env.MONGO_URI
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 app.use(cors({
+    origin: 'https://creditgroww.vercel.app',
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
 }));
