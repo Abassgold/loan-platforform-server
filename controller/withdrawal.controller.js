@@ -3,13 +3,12 @@ import Loan from "../models/loan.model.js";
 import Withdrawal from "../models/withdrawal.model.js";
 
 // Request a withdrawal
+
 export const createWithdrawal = async (req, res) => {
   try {
-    const { bankName, accountName, accountNumber, amount, identificationFront, identificationBack } = req.body;
+    const { bankName, accountName, accountNumber, amount, identification } = req.body;
+console.log('resul');
 
-    if (!identificationFront || !identificationBack) {
-      return res.status(200).json({ message: 'Identification images are required' });
-    }
     const checkLoan = Loan.findOne({ user: req.user.id })
     if (!checkLoan) {
       return res.status(200).json({
@@ -23,14 +22,13 @@ export const createWithdrawal = async (req, res) => {
         msg: 'Loan request has not been approved yet.',
       });
     }
-    const images = uploadImage()
+    const file = await uploadImage(identification)
     const withdrawal = new Withdrawal({
       bankName,
       accountName,
       accountNumber,
       amount,
-      identificationFront,
-      identificationBack,
+      identification: file
     });
 
     await withdrawal.save();

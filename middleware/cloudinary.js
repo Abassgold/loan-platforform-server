@@ -1,28 +1,17 @@
-import { v2 } from "cloudinary"
+import { v2 as cloudinary } from "cloudinary"
+import dotenv from 'dotenv';
 
-v2.config({
+dotenv.config();
+cloudinary.config({
     cloud_name: process.env.your_cloud_name,
     api_key: process.env.your_api_key,
     api_secret: process.env.your_api_secret,
   });
   
-  const uploadImage = async (file1, file2) => {
+  const uploadImage = async (file) => {
     try {
-      let res1 = await v2.uploader.upload(file1, {
-        upload_preset: 'my_preset'
-      });
-      let res2 = await v2.uploader.upload(file2, {
-        upload_preset: 'my_preset'
-      });
-      console.log('Upload success:', result.secure_url);
-      return {
-        firstImageUrl: res1.secure_url,
-        secondImageUrl: res2.secure_url
-      };
-      console.log(res1);
-      console.log(res2);
-      
-      
+      let res = await cloudinary.uploader.upload(file);
+      return  res.secure_url
     } catch (error) {
       console.error('Upload failed:', error);
       throw error; 
