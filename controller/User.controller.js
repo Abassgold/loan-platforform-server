@@ -51,14 +51,14 @@ export const SignIn = async (req, res) => {
              updatedAt: user.updatedAt
             }
         const token = jwt.sign(option, process.env.JWT_SECRET);
+         const isProduction = process.env.NODE_ENV === "production";
         res.cookie('authToken', token, {
             httpOnly: true,
             secure: true,
-            sameSite: 'none',
+            sameSite: isProduction ? 'none' : "lax",
+            domain: isProduction ? '.creditgroww.vercel.app' : ".localhost",
             maxAge: 3600000 * 24 * 30,
-        });
-
-        res.json({
+        }).status(200).json({
             success: true,
             msg: 'Login successful',
             user: {
@@ -113,13 +113,14 @@ export const updateName = async (req, res) => {
             updatedAt: user.updatedAt
            };
         const token = jwt.sign(option, process.env.JWT_SECRET);
+         const isProduction = process.env.NODE_ENV === "production";
         res.cookie('authToken', token, {
             httpOnly: true,
             secure: true,
-            sameSite: 'none',
+            sameSite: isProduction ? 'none' : "lax",
+            domain: isProduction ? '.creditgroww.vercel.app' : ".localhost",
             maxAge: 3600000 * 24 * 30,
-        });
-        res.status(200).json({ success: true, msg: "Update successful ✅", user });
+        }).status(200).json({ success: true, msg: "Update successful ✅", user });
     } catch (error) {
         console.error(error);
         res.status(500).json({ success: false, msg: "Server error" });
@@ -127,8 +128,6 @@ export const updateName = async (req, res) => {
 };
 
 export const updatePassword = async (req, res) => {
-    console.log(req.body);
-    console.log(req?.user.id);
     try {
         const { oldPassword, newPassword } = req.body;
 

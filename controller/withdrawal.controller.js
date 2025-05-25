@@ -19,7 +19,7 @@ console.log('resul');
     if (checkLoan && checkLoan.status !== 'approved') {
       return res.status(200).json({
         success: false,
-        msg: 'Loan request has not been approved yet.',
+        msg: 'Your loan request has not been approved yet 🚫',
       });
     }
     const file = await uploadImage(identification)
@@ -32,7 +32,7 @@ console.log('resul');
     });
 
     await withdrawal.save();
-    res.status(201).json({ success: true, msg: 'Withdrawal request submitted successfully', withdrawal });
+    res.status(201).json({ success: true, msg: 'Withdrawal request submitted successfully ✅', withdrawal });
   } catch (err) {
     console.log(err);
     res.status(500).json({ success: false, msg: 'Error processing withdrawal request', error: err.message });
