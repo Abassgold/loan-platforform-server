@@ -27,9 +27,7 @@ export const SignUp = async (req, res) => {
 export const SignIn = async (req, res) => {
     try {
         const { email, password } = req.body;
-        const tokens = req.cookies
-        console.log('the token is ' + tokens);
-
+        const tokens = req.cookies.authToken
         if (!email || !password) {
             return res.status(200).json({ success: false, msg: "Email and password are required" });
         }
