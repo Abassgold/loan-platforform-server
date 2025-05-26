@@ -27,6 +27,9 @@ export const SignUp = async (req, res) => {
 export const SignIn = async (req, res) => {
     try {
         const { email, password } = req.body;
+        const tokens = req.cookies
+        console.log('the token is ' + tokens);
+
         if (!email || !password) {
             return res.status(200).json({ success: false, msg: "Email and password are required" });
         }
@@ -43,22 +46,23 @@ export const SignIn = async (req, res) => {
             msg: 'Invalid credentials'
         });
         const option = {
-             id: user._id, 
-             name: user.name, 
-             role: user.role, 
-             email: user.email,
-             createdAt: user.createdAt,
-             updatedAt: user.updatedAt
-            }
+            id: user._id,
+            name: user.name,
+            role: user.role,
+            email: user.email,
+            createdAt: user.createdAt,
+            updatedAt: user.updatedAt
+        }
         const token = jwt.sign(option, process.env.JWT_SECRET);
-         const isProduction = process.env.NODE_ENV === "production";
         res.cookie('authToken', token, {
             httpOnly: true,
             secure: true,
-            sameSite: isProduction ? 'none' : "lax",
-            domain: isProduction ? '.creditgroww.vercel.app' : ".localhost",
-            maxAge: 3600000 * 24 * 30,
-        }).status(200).json({
+            sameSite: 'none',
+            path: '/',
+            maxAge: 1000 * 60 * 60 * 24, 
+        });
+
+        res.status(200).json({
             success: true,
             msg: 'Login successful',
             user: {
@@ -105,22 +109,24 @@ export const updateName = async (req, res) => {
             return res.status(200).json({ success: false, msg: "Update failed ❌" });
         }
         const option = {
-            id: user._id, 
-            name: user.name, 
-            role: user.role, 
+            id: user._id,
+            name: user.name,
+            role: user.role,
             email: user.email,
             createdAt: user.createdAt,
             updatedAt: user.updatedAt
-           };
+        };
         const token = jwt.sign(option, process.env.JWT_SECRET);
-         const isProduction = process.env.NODE_ENV === "production";
-        res.cookie('authToken', token, {
-            httpOnly: true,
+        const isProduction = process.env.NODE_ENV === "production";
+       res.cookie('authToken', token, {
+            httpOnly: false,
             secure: true,
-            sameSite: isProduction ? 'none' : "lax",
-            domain: isProduction ? '.creditgroww.vercel.app' : ".localhost",
-            maxAge: 3600000 * 24 * 30,
-        }).status(200).json({ success: true, msg: "Update successful ✅", user });
+            sameSite: 'Lax',
+            path: '/',
+            maxAge: 1000 * 60 * 60 * 24, 
+        });
+
+        res.status(200).json({ success: true, msg: "Update successful ✅", user });
     } catch (error) {
         console.error(error);
         res.status(500).json({ success: false, msg: "Server error" });
