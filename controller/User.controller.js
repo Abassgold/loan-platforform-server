@@ -53,7 +53,7 @@ export const SignIn = async (req, res) => {
         }
         const token = jwt.sign(option, process.env.JWT_SECRET);
         res.cookie('authToken', token, {
-            httpOnly: true,
+            httpOnly: false,
             secure: true,
             sameSite: 'none',
             path: '/',
